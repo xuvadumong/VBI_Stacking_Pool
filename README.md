@@ -5,7 +5,7 @@ This contract provides a way for other users to delegate funds to a single valid
 Implements the https://github.com/nearprotocol/NEPs/pull/27 standard.
 
 There are three different roles:
-- The staking pool contract account `my_validator`. A key-less account with the contract that pools funds.
+- The staking pool contract account `haitq6_validator.testnet`. A key-less account with the contract that pools funds.
 - The owner of the staking contract `owner`. Owner runs the validator node on behalf of the staking pool account.
 - Delegator accounts `user1`, `user2`, etc. Accounts that want to stake their funds with the pool.
 
@@ -200,67 +200,67 @@ rustup target add wasm32-unknown-unknown
 Commands to deploy and initialize a staking contract:
 
 ```bash
-near create_account my_validator --masterAccount=owner
-near deploy --accountId=my_validator --wasmFile=res/staking_pool.wasm
-# Initialize staking pool at account `my_validator` for the owner account ID `owner`, given staking pool and 10% reward fee.
-near call my_validator new '{"owner_id": "owner", "stake_public_key": "CE3QAXyVLeScmY9YeEyR3Tw9yXfjBPzFLzroTranYtVb", "reward_fee_fraction": {"numerator": 10, "denominator": 100}}' --account_id owner
-# TODO: Delete all access keys from the `my_validator` account
+near create_account haitq6_validator.testnet --masterAccount=haitq6_owner.testnet
+near deploy --accountId=haitq6_validator.testnet --wasmFile=res/staking_pool.wasm
+# Initialize staking pool at account `haitq6_validator.testnet` for the owner account ID `haitq6_owner.testnet`, given staking pool and 10% reward fee.
+near call haitq6_validator.testnet new '{"owner_id": "haitq6_owner.testnet", "stake_public_key": "6yk53aoyaBhUw8bPQKVnydgpqGQskZpB86kuzmWxYrBd", "reward_fee_fraction": {"numerator": 10, "denominator": 100}}' --account_id haitq6_owner.testnet
+# TODO: Delete all access keys from the `haitq6_validator.testnet` account
 ```
 
 As a user, to delegate money:
 
 ```bash
-near call my_validator deposit '{}' --accountId user1 --amount 100
-near call my_validator stake '{"amount": "100000000000000000000000000"}' --accountId user1
+near call haitq6_validator.testnet deposit '{}' --accountId haitq6_user1.testnet --amount 1
+near call haitq6_validator.testnet stake '{"amount": "1000000000000000000000000"}' --accountId haitq6_user1.testnet
 ```
 
 To update current rewards:
 
 ```bash
-near call my_validator ping '{}' --accountId user1
+near call haitq6_validator.testnet ping '{}' --accountId haitq6_user1.testnet
 ```
 
 View methods:
 
 ```bash
 # User1 total balance
-near view my_validator get_account_total_balance '{"account_id": "user1"}'
+near view haitq6_validator.testnet get_account_total_balance '{"account_id": "haitq6_user1.testnet"}'
 
 # User1 staked balance
-near view my_validator get_account_staked_balance '{"account_id": "user1"}'
+near view haitq6_validator.testnet get_account_staked_balance '{"account_id": "haitq6_user1.testnet"}'
 
 # User1 unstaked balance
-near view my_validator get_account_unstaked_balance '{"account_id": "user1"}'
+near view haitq6_validator.testnet get_account_unstaked_balance '{"account_id": "haitq6_user1.testnet"}'
 
 # Whether user1 can withdraw now
-near view my_validator is_account_unstaked_balance_available '{"account_id": "user1"}'
+near view haitq6_validator.testnet is_account_unstaked_balance_available '{"account_id": "haitq6_user1.testnet"}'
 
 # Total staked balance of the entire pool
-near view my_validator get_total_staked_balance '{}'
+near view haitq6_validator.testnet get_total_staked_balance '{}'
 
 # Owner of the staking pool
-near view my_validator get_owner_id '{}'
+near view haitq6_validator.testnet get_owner_id '{}'
 
 # Current reward fee
-near view my_validator get_reward_fee_fraction '{}'
+near view haitq6_validator.testnet get_reward_fee_fraction '{}'
 
 # Owners balance
-near view my_validator get_account_total_balance '{"account_id": "owner"}'
+near view haitq6_validator.testnet get_account_total_balance '{"account_id": "haitq6_owner.testnet"}'
 
 # Staking key
-near view my_validator get_staking_key '{}'
+near view haitq6_validator.testnet get_staking_key '{}'
 ```
 
 To un-delegate, first run `unstake`:
 
 ```bash
-near call my_validator unstake '{"amount": "100000000000000000000000000"}' --accountId user1
+near call haitq6_validator.testnet unstake '{"amount": "100000000000000000000000000"}' --accountId haitq6_user1.testnet
 ```
 
 And after 3 epochs, run `withdraw`:
 
 ```bash
-near call my_validator withdraw '{"amount": "100000000000000000000000000"}' --accountId user1
+near call haitq6_validator.testnet withdraw '{"amount": "100000000000000000000000000"}' --accountId haitq6_user1.testnet
 ```
 
 ## Interface
@@ -407,16 +407,16 @@ near login
 near stake nearkat.betanet <staking public key> 0
 
 #If you staked to a contract get the staked balance
-near view my_validator get_account_staked_balance '{"account_id": "user1"}'
+near view haitq6_validator.testnet get_account_staked_balance '{"account_id": "user1"}'
 
 #Unsake by copying and pasting the staked balance
-near call my_validator unstake '{"amount": "100000000000000000000000000"}' --accountId user1
+near call haitq6_validator.testnet unstake '{"amount": "100000000000000000000000000"}' --accountId user1
 
 #Wait 4 epochs (12 hours) to withdraw and check if balance is available to withdraw
-near view my_validator is_account_unstaked_balance_available '{"account_id": "user1"}'
+near view haitq6_validator.testnet is_account_unstaked_balance_available '{"account_id": "user1"}'
 
 #If is_account_unstaked_balance_available returns "true" withdraw
-near call my_validator withdraw '{"amount": "100000000000000000000000000"}' --accountId user1
+near call haitq6_validator.testnet withdraw '{"amount": "100000000000000000000000000"}' --accountId user1
 ```
 #### Download new contract with Git:
 ```bash
@@ -447,14 +447,14 @@ rustup target add wasm32-unknown-unknown
 ./build.sh
 ```
 #### Create a new account to deploy contract to
-- Set my_validator to the name you want publicly displayed
+- Set haitq6_validator.testnet to the name you want publicly displayed
 - --masterAccount is your account you signed up to StakeWars2 with
 ```bash
-near create_account my_validator --masterAccount=owner
+near create_account haitq6_validator.testnet --masterAccount=owner
 ```
 #### Deploy the contract to the new account
 ```bash
-near deploy --accountId=my_validator --wasmFile=res/staking_pool.wasm
+near deploy --accountId=haitq6_validator.testnet --wasmFile=res/staking_pool.wasm
 ```
 #### Create a new node:
 
@@ -472,15 +472,15 @@ mv ~/.near/betanet ~/.near/betanet_old
 With the command nearup betanet. Modify the launch command according to your actual validator configuration (e.g. using --nodocker and --binary-path)
 
 ##### Set your validator ID.
-Put your staking pool account (the one we called my_validator in the steps above)
+Put your staking pool account (the one we called haitq6_validator.testnet in the steps above)
 
 ##### Copy your validator public key, or issue the command (before the next step)
 ```bash
 cat ~/.near/betanet/validator_key.json |grep "public_key"
 ```
-#### Initialize staking pool at account `my_validator` for the owner account ID `owner`, given staking pool and 10% reward fee
+#### Initialize staking pool at account `haitq6_validator.testnet` for the owner account ID `owner`, given staking pool and 10% reward fee
 ```bash
-near call my_validator new '{"owner_id": "owner", "stake_public_key": "CE3QAXyVLeScmY9YeEyR3Tw9yXfjBPzFLzroTranYtVb", "reward_fee_fraction": {"numerator": 10, "denominator": 100}}' --account_id owner
+near call haitq6_validator.testnet new '{"owner_id": "owner", "stake_public_key": "CE3QAXyVLeScmY9YeEyR3Tw9yXfjBPzFLzroTranYtVb", "reward_fee_fraction": {"numerator": 10, "denominator": 100}}' --account_id owner
 ```
 #### Check the current `seat price` to transfer the correct amount to your delegator(s)
 ```bash
@@ -497,17 +497,17 @@ near login
 ```
 #### Deposit NEAR from the delegator account to the valdiator contract
 ```bash
-near call my_validator deposit '{}' --accountId user1 --amount 100
+near call haitq6_validator.testnet deposit '{}' --accountId user1 --amount 100
 ```
 #### Stake the deposited amount to the validator contract
 ```bash
-near call my_validator stake '{"amount": "100000000000000000000000000"}' --accountId user1
+near call haitq6_validator.testnet stake '{"amount": "100000000000000000000000000"}' --accountId user1
 ```
 #### Check that your validator proposal was (Accepted) or deposit and stake more NEAR
 ```bash
-near proposals | grep my_validator
+near proposals | grep haitq6_validator.testnet
 #After some time check to make sure you're listed
-near validators next | grep my_validator
+near validators next | grep haitq6_validator.testnet
 ```
 ## Common errors and resolutions
 
